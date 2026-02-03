@@ -1,0 +1,25 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    
+    <!-- Package information -->
+    <Authors>Mario Zechner</Authors>
+    <Company>Pi Mono</Company>
+    <Product>Pi</Product>
+    <Copyright>Copyright © 2026</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/ar4ft/pi-mono-net</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/ar4ft/pi-mono-net</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    
+    <!-- Version -->
+    <VersionPrefix>0.51.3</VersionPrefix>
+  </PropertyGroup>
+</Project>
