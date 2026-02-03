@@ -132,15 +132,33 @@ public class Agent
         
         try
         {
-            Emit(new AgentStartEvent());
+            var streamFunction = new SimpleStreamFunction();
+            // Register provider here based on model API
+            // For now, just run a basic loop
 
-            // This is a simplified version - full implementation would include:
-            // - Message streaming
-            // - Tool execution
-            // - Steering and follow-up messages
-            // - Context transformation
-            
-            Emit(new AgentEndEvent { Messages = _state.Messages });
+            var agentLoop = new AgentLoop(_config, streamFunction);
+
+            await foreach (var evt in agentLoop.RunAsync(
+                _state.SystemPrompt,
+                _state.Messages,
+                _state.Tools,
+                _cancellation.Token))
+            {
+                Emit(evt);
+                
+                // Update state based on events
+                _state = evt switch
+                {
+                    MessageStartEvent => _state with { IsStreaming = true },
+                    MessageEndEvent msgEnd => _state with
+                    {
+                        IsStreaming = false,
+                        StreamMessage = msgEnd.Message
+                    },
+                    AgentEndEvent => _state with { IsStreaming = false },
+                    _ => _state
+                };
+            }
         }
         finally
         {
