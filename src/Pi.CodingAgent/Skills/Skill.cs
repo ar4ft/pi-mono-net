@@ -1,3 +1,5 @@
+using Pi.CodingAgent.Heartbeat;
+
 namespace Pi.CodingAgent.Skills;
 
 /// <summary>
@@ -35,6 +37,17 @@ public record Skill
     /// If true, skill is not included in system prompt (only invoked explicitly)
     /// </summary>
     public bool DisableModelInvocation { get; init; }
+
+    /// <summary>
+    /// Optional heartbeat configuration for this skill
+    /// If present, the skill can run periodic heartbeat checks
+    /// </summary>
+    public HeartbeatConfig? Heartbeat { get; init; }
+
+    /// <summary>
+    /// Path to HEARTBEAT.md file if it exists
+    /// </summary>
+    public string? HeartbeatFilePath { get; init; }
 }
 
 /// <summary>
@@ -49,6 +62,7 @@ public record SkillFrontmatter
     public string? Compatibility { get; init; }
     public Dictionary<string, object>? Metadata { get; init; }
     public List<string>? AllowedTools { get; init; }
+    public Dictionary<string, object>? Heartbeat { get; init; }
 }
 
 /// <summary>
