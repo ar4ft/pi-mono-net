@@ -138,7 +138,7 @@ public class CodingAgentCLI
                     Name = "GPT-4 (GitHub Copilot)",
                     Api = "openai-completions",
                     Provider = "github-copilot",
-                    BaseUrl = Auth.GitHubCopilotAuth.GetBaseUrlFromToken(credentials.CopilotToken),
+                    BaseUrl = Pi.AI.Auth.GitHubCopilotAuth.GetBaseUrlFromToken(credentials.CopilotToken),
                     Reasoning = false,
                     Input = new List<string> { "text" },
                     Cost = new ModelCost { Input = 0, Output = 0, CacheRead = 0, CacheWrite = 0 },
