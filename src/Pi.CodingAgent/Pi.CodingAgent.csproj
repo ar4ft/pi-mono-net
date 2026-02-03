@@ -1,5 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\Pi.AI\Pi.AI.csproj" />
+    <ProjectReference Include="..\Pi.TUI\Pi.TUI.csproj" />
+    <ProjectReference Include="..\Pi.Agent\Pi.Agent.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
