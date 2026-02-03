@@ -1,13 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Pi.AI\Pi.AI.csproj" />
-    <ProjectReference Include="..\Pi.TUI\Pi.TUI.csproj" />
-    <ProjectReference Include="..\Pi.Agent\Pi.Agent.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="YamlDotNet" Version="16.3.0" />
+    <ProjectReference Include="..\Pi.CodingAgent\Pi.CodingAgent.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
