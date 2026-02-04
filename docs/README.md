@@ -41,6 +41,9 @@ Welcome to the comprehensive documentation for Pi-Mono-Net, a production-ready m
 - **[Build an Extension](tutorials/first-extension.md)** - Create a plugin
 - **[Advanced Skills](tutorials/advanced-skills.md)** - Complex skill patterns
 
+### 🎯 Guides
+- **[Scaffolding Specialized Agents](guides/scaffolding-specialized-agents.md)** - Create specialized agents for trading, accounting, document review, etc.
+
 ## Quick Links
 
 - [Main README](../README.md) - Project overview
