@@ -10,17 +10,20 @@ public class SessionManager
     private ConversationHistory? _currentHistory;
     private Timer? _autoSaveTimer;
     private bool _isDirty;
+    
+    private const string DefaultSessionNameFormat = "yyyy-MM-dd HH:mm";
 
     public SessionInfo? CurrentSession => _currentSession;
     public ConversationHistory? CurrentHistory => _currentHistory;
     public bool HasActiveSession => _currentSession != null;
+    public string? CurrentSessionId => _currentSession?.Id;
 
     public SessionManager(SessionStorage? storage = null)
     {
         _storage = storage ?? new SessionStorage();
     }
 
-    public async Task<SessionInfo> CreateSessionAsync(string? name = null, string? model = null)
+    public async Task<SessionInfo> CreateSessionAsync(string? name = null, string? model = null, string? parentSessionId = null)
     {
         // Save current session if exists
         if (HasActiveSession)
@@ -32,10 +35,11 @@ public class SessionManager
         _currentSession = new SessionInfo
         {
             Id = sessionId,
-            Name = name ?? $"Session {DateTime.Now:yyyy-MM-dd HH:mm}",
+            Name = name ?? $"Session {DateTime.UtcNow.ToString(DefaultSessionNameFormat)}",
             CreatedAt = DateTime.UtcNow,
             LastAccessed = DateTime.UtcNow,
-            Model = model
+            Model = model,
+            ParentSession = parentSessionId
         };
 
         _currentHistory = new ConversationHistory();
@@ -173,6 +177,39 @@ public class SessionManager
 
         _currentSession.Metadata[key] = value;
         _isDirty = true;
+    }
+
+    /// <summary>
+    /// Creates a new session as a fork/branch of the current session.
+    /// This method stores the current session ID before creating a new one,
+    /// preventing the bug where forks would overwrite the parent session.
+    /// 
+    /// Note: The C# implementation uses full-session saves (_isDirty flag) rather than 
+    /// incremental appends. If incremental persistence is added in the future, ensure 
+    /// that user messages in forked sessions are persisted even before the first 
+    /// assistant message arrives (see TypeScript fix in commit c557320).
+    /// </summary>
+    /// <param name="name">Optional name for the forked session</param>
+    /// <param name="model">Optional model for the forked session</param>
+    /// <returns>The newly created forked session</returns>
+    /// <exception cref="InvalidOperationException">Thrown when there is no active session to fork from</exception>
+    public async Task<SessionInfo> ForkSessionAsync(string? name = null, string? model = null)
+    {
+        if (!HasActiveSession)
+        {
+            throw new InvalidOperationException("Cannot fork session: no active session exists");
+        }
+
+        // CRITICAL: Store the current session ID BEFORE creating the new session
+        // This prevents the bug where the fork would write to the parent session file
+        var parentSessionId = _currentSession!.Id;
+
+        // Create new session with parent reference
+        return await CreateSessionAsync(
+            name: name ?? $"Fork of {_currentSession.Name} {DateTime.UtcNow.ToString(DefaultSessionNameFormat)}",
+            model: model ?? _currentSession.Model,
+            parentSessionId: parentSessionId
+        );
     }
 
     private void StartAutoSave()
