@@ -10,6 +10,8 @@ public class SessionManager
     private ConversationHistory? _currentHistory;
     private Timer? _autoSaveTimer;
     private bool _isDirty;
+    
+    private const string DefaultSessionNameFormat = "yyyy-MM-dd HH:mm";
 
     public SessionInfo? CurrentSession => _currentSession;
     public ConversationHistory? CurrentHistory => _currentHistory;
@@ -33,7 +35,7 @@ public class SessionManager
         _currentSession = new SessionInfo
         {
             Id = sessionId,
-            Name = name ?? $"Session {DateTime.Now:yyyy-MM-dd HH:mm}",
+            Name = name ?? $"Session {DateTime.UtcNow.ToString(DefaultSessionNameFormat)}",
             CreatedAt = DateTime.UtcNow,
             LastAccessed = DateTime.UtcNow,
             Model = model,
@@ -198,7 +200,7 @@ public class SessionManager
 
         // Create new session with parent reference
         return await CreateSessionAsync(
-            name: name ?? $"Fork of {_currentSession?.Name ?? "Session"} {DateTime.UtcNow:yyyy-MM-dd HH:mm}",
+            name: name ?? $"Fork of {_currentSession?.Name ?? "Session"} {DateTime.UtcNow.ToString(DefaultSessionNameFormat)}",
             model: model ?? _currentSession?.Model,
             parentSessionId: parentSessionId
         );
