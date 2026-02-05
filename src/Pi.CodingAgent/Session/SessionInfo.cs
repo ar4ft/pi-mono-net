@@ -28,6 +28,9 @@ public class SessionInfo
 
     [JsonPropertyName("metadata")]
     public Dictionary<string, string> Metadata { get; set; } = new();
+
+    [JsonPropertyName("parent_session")]
+    public string? ParentSession { get; set; }
 }
 
 /// <summary>
