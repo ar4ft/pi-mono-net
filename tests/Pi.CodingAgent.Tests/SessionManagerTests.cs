@@ -3,14 +3,42 @@ using Xunit;
 
 namespace Pi.CodingAgent.Tests;
 
-public class SessionManagerTests
+public class SessionManagerTests : IDisposable
 {
+    private readonly string _tempDirectory;
+    
+    public SessionManagerTests()
+    {
+        _tempDirectory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+    }
+    
+    public void Dispose()
+    {
+        // Clean up temporary directories created during tests
+        if (Directory.Exists(_tempDirectory))
+        {
+            try
+            {
+                Directory.Delete(_tempDirectory, true);
+            }
+            catch
+            {
+                // Ignore cleanup errors
+            }
+        }
+    }
+    
+    private SessionManager CreateSessionManager()
+    {
+        var storage = new SessionStorage(_tempDirectory);
+        return new SessionManager(storage);
+    }
+
     [Fact]
     public async Task CreateSessionAsync_WithParentSessionId_SetsParentSession()
     {
         // Arrange
-        var storage = new SessionStorage(Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()));
-        var manager = new SessionManager(storage);
+        var manager = CreateSessionManager();
         
         // Create first session
         var parentSession = await manager.CreateSessionAsync("Parent Session");
@@ -31,8 +59,7 @@ public class SessionManagerTests
     public async Task ForkSessionAsync_CreatesNewSessionWithParentReference()
     {
         // Arrange
-        var storage = new SessionStorage(Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()));
-        var manager = new SessionManager(storage);
+        var manager = CreateSessionManager();
         
         // Create initial session
         var originalSession = await manager.CreateSessionAsync("Original Session", "gpt-4");
@@ -57,8 +84,7 @@ public class SessionManagerTests
     public async Task ForkSessionAsync_PreservesParentSessionId()
     {
         // Arrange
-        var storage = new SessionStorage(Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()));
-        var manager = new SessionManager(storage);
+        var manager = CreateSessionManager();
         
         // Create first session
         var session1 = await manager.CreateSessionAsync("Session 1");
@@ -80,8 +106,7 @@ public class SessionManagerTests
     public async Task CreateSessionAsync_WithoutParentSessionId_HasNullParentSession()
     {
         // Arrange
-        var storage = new SessionStorage(Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()));
-        var manager = new SessionManager(storage);
+        var manager = CreateSessionManager();
         
         // Act
         var session = await manager.CreateSessionAsync("New Session");
@@ -97,8 +122,7 @@ public class SessionManagerTests
     public async Task SessionInfo_SerializesParentSession()
     {
         // Arrange
-        var storage = new SessionStorage(Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()));
-        var manager = new SessionManager(storage);
+        var manager = CreateSessionManager();
         
         // Create parent and child sessions
         var parentSession = await manager.CreateSessionAsync("Parent");

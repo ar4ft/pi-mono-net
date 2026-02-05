@@ -198,7 +198,7 @@ public class SessionManager
 
         // Create new session with parent reference
         return await CreateSessionAsync(
-            name: name ?? $"Fork of {_currentSession?.Name ?? "Session"} {DateTime.Now:yyyy-MM-dd HH:mm}",
+            name: name ?? $"Fork of {_currentSession?.Name ?? "Session"} {DateTime.UtcNow:yyyy-MM-dd HH:mm}",
             model: model ?? _currentSession?.Model,
             parentSessionId: parentSessionId
         );
