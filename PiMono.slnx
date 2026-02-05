@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Pi.Agent/Pi.Agent.csproj" />
+    <Project Path="src/Pi.AI/Pi.AI.csproj" />
+    <Project Path="src/Pi.CodingAgent/Pi.CodingAgent.csproj" />
+    <Project Path="src/Pi.MOM/Pi.MOM.csproj" />
+    <Project Path="src/Pi.Pods/Pi.Pods.csproj" />
+    <Project Path="src/Pi.TUI/Pi.TUI.csproj" />
+    <Project Path="src/Pi.WebUI/Pi.WebUI.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Pi.Agent.Tests/Pi.Agent.Tests.csproj" />
+    <Project Path="tests/Pi.AI.Tests/Pi.AI.Tests.csproj" />
+    <Project Path="tests/Pi.TUI.Tests/Pi.TUI.Tests.csproj" />
+  </Folder>
+</Solution>

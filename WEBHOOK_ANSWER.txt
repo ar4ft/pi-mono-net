@@ -1,0 +1,109 @@
+================================================================================
+QUESTION: Do we have API-based (Webhooks) for external system integrations?
+================================================================================
+
+ANSWER: NO
+
+================================================================================
+CURRENT STATUS
+================================================================================
+
+Webhook/API Integration: NOT IMPLEMENTED
+
+What exists:
+  - Documentation with webhook EXAMPLES (conceptual only)
+  - Pi.WebUI (shell only, no API endpoints)
+  - Pi.Gateway (internal message broker, not HTTP server)
+
+What's missing:
+  - HTTP API server
+  - Webhook endpoints
+  - Request handlers
+  - Signature verification
+  - Platform adapters
+
+================================================================================
+WHAT ACTUALLY WORKS (Alternative Triggers)
+================================================================================
+
+✅ Time-based Triggers
+   - Implementation: Pi.Scheduler
+   - Status: Fully working
+   - Use case: Run agent every N minutes/hours
+
+✅ File-based Triggers  
+   - Implementation: FileSystemWatcher
+   - Status: Available (.NET built-in)
+   - Use case: Agent processes new files in folder
+
+✅ Channel-based Triggers
+   - Implementation: Pi.Gateway + Pi.IMessage
+   - Status: Fully working
+   - Use case: Agent responds to messages
+
+❌ API-based Triggers (Webhooks)
+   - Implementation: NONE
+   - Status: NOT IMPLEMENTED
+   - Use case: Agent responds to external webhooks
+
+================================================================================
+CONFUSION SOURCE
+================================================================================
+
+The documentation (docs/guides/scaffolding-specialized-agents.md) includes
+code examples like:
+
+    app.MapPost("/webhook/trade-signal", async (signal) => 
+    {
+        await tradingAgent.Prompt($"Analyze: {signal}");
+    });
+
+These are CONCEPTUAL EXAMPLES showing what COULD be built.
+They are NOT actual working code in the repository.
+
+================================================================================
+TO ADD WEBHOOK SUPPORT
+================================================================================
+
+Would require creating:
+
+1. New Pi.Webhooks project (ASP.NET Core Web API)
+2. Webhook controller with endpoints
+3. Signature verification
+4. Integration with Pi.Gateway
+5. Platform-specific adapters
+
+Estimated effort: 4-6 weeks
+
+================================================================================
+WORKAROUNDS (What to use instead of webhooks)
+================================================================================
+
+Option 1: Time-based polling
+  - Agent checks external API every N minutes
+  - Uses Pi.Scheduler
+  - Example: Check stock prices every 15 minutes
+
+Option 2: File-based integration
+  - External system writes files
+  - Agent monitors folder and processes files
+  - Uses FileSystemWatcher
+  - Example: Process CSVs dropped in folder
+
+Option 3: Channel integration
+  - Use messaging platform (Slack, Discord, etc.)
+  - External system posts to channel
+  - Agent responds via Pi.Gateway
+  - Example: Slack bot receives notifications
+
+================================================================================
+BOTTOM LINE
+================================================================================
+
+❌ Webhooks: NOT currently implemented
+✅ Other triggers: Work great (time, file, channel)
+🔮 Future: Could add webhooks as next major feature
+
+For full details, see: WEBHOOK_STATUS.md
+
+================================================================================

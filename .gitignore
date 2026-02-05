@@ -33,3 +33,35 @@ pi-*.html
 out.html
 packages/coding-agent/binaries/
 todo.md
+
+# .NET Core
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.dll
+*.exe
+*.pdb
+*.log
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.sln.iml
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+bld/
+
+# Test results
+*.trx
+*.coverage
