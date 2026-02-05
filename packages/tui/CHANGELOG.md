@@ -2,6 +2,24 @@
 
 ## [Unreleased]
 
+## [0.51.6] - 2026-02-04
+
+### Changed
+
+- Slash command menu now triggers on the first line even when other lines have content, allowing commands to be prepended to existing text ([#1227](https://github.com/badlogic/pi-mono/pull/1227) by [@aliou](https://github.com/aliou))
+
+### Fixed
+
+- Fixed `/settings` crashing in narrow terminals by handling small widths in the settings list ([#1246](https://github.com/badlogic/pi-mono/pull/1246) by [@haoqixu](https://github.com/haoqixu))
+
+## [0.51.5] - 2026-02-04
+
+## [0.51.4] - 2026-02-03
+
+### Fixed
+
+- Fixed input scrolling to avoid splitting emoji sequences ([#1228](https://github.com/badlogic/pi-mono/pull/1228) by [@haoqixu](https://github.com/haoqixu))
+
 ## [0.51.3] - 2026-02-03
 
 ## [0.51.2] - 2026-02-03
