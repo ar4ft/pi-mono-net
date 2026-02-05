@@ -35,7 +35,7 @@ public class SessionManager
         _currentSession = new SessionInfo
         {
             Id = sessionId,
-            Name = name ?? $"Session {DateTime.UtcNow.ToString(DefaultSessionNameFormat)}",
+            Name = name ?? $"Session {DateTime.UtcNow:yyyy-MM-dd HH:mm}",
             CreatedAt = DateTime.UtcNow,
             LastAccessed = DateTime.UtcNow,
             Model = model,
@@ -192,16 +192,22 @@ public class SessionManager
     /// <param name="name">Optional name for the forked session</param>
     /// <param name="model">Optional model for the forked session</param>
     /// <returns>The newly created forked session</returns>
+    /// <exception cref="InvalidOperationException">Thrown when there is no active session to fork from</exception>
     public async Task<SessionInfo> ForkSessionAsync(string? name = null, string? model = null)
     {
+        if (!HasActiveSession)
+        {
+            throw new InvalidOperationException("Cannot fork session: no active session exists");
+        }
+
         // CRITICAL: Store the current session ID BEFORE creating the new session
         // This prevents the bug where the fork would write to the parent session file
-        var parentSessionId = _currentSession?.Id;
+        var parentSessionId = _currentSession!.Id;
 
         // Create new session with parent reference
         return await CreateSessionAsync(
-            name: name ?? $"Fork of {_currentSession?.Name ?? "Session"} {DateTime.UtcNow.ToString(DefaultSessionNameFormat)}",
-            model: model ?? _currentSession?.Model,
+            name: name ?? $"Fork of {_currentSession.Name} {DateTime.UtcNow:yyyy-MM-dd HH:mm}",
+            model: model ?? _currentSession.Model,
             parentSessionId: parentSessionId
         );
     }

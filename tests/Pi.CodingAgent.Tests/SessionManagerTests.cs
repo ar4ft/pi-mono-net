@@ -10,6 +10,7 @@ public class SessionManagerTests : IDisposable
     public SessionManagerTests()
     {
         _tempDirectory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+        Directory.CreateDirectory(_tempDirectory);
     }
     
     public void Dispose()
@@ -143,5 +144,19 @@ public class SessionManagerTests : IDisposable
         
         // Cleanup
         await manager.CloseSessionAsync();
+    }
+    
+    [Fact]
+    public async Task ForkSessionAsync_NoActiveSession_ThrowsException()
+    {
+        // Arrange
+        var manager = CreateSessionManager();
+        
+        // Act & Assert
+        var exception = await Assert.ThrowsAsync<InvalidOperationException>(
+            () => manager.ForkSessionAsync()
+        );
+        
+        Assert.Contains("no active session", exception.Message);
     }
 }
