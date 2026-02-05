@@ -88,12 +88,13 @@ public string? CurrentSessionId => _currentSession?.Id;
 ```
 
 #### 3. SessionManagerTests.cs (NEW)
-Created comprehensive test suite with 5 tests:
+Created comprehensive test suite with 6 tests:
 - `CreateSessionAsync_WithParentSessionId_SetsParentSession`
 - `ForkSessionAsync_CreatesNewSessionWithParentReference`
 - `ForkSessionAsync_PreservesParentSessionId`
 - `CreateSessionAsync_WithoutParentSessionId_HasNullParentSession`
 - `SessionInfo_SerializesParentSession`
+- `ForkSessionAsync_NoActiveSession_ThrowsException`
 
 ## Key Differences: C# vs TypeScript
 
@@ -120,7 +121,7 @@ The C# implementation **does not have** the persistence bug because it always wr
 ## Testing
 
 ### Test Coverage
-- **Total Tests**: 51 (46 existing + 5 new)
+- **Total Tests**: 52 (46 existing + 6 new)
 - **Pass Rate**: 100%
 - **Build Status**: Success (0 errors, 0 warnings)
 
@@ -130,6 +131,7 @@ The C# implementation **does not have** the persistence bug because it always wr
 3. Parent session ID preservation across forks
 4. Null parent session for root sessions
 5. Serialization/deserialization of parent session
+6. Exception handling when forking without active session
 
 ## Future-Proofing
 
