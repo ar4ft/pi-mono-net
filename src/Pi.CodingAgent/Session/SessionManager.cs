@@ -181,6 +181,11 @@ public class SessionManager
     /// Creates a new session as a fork/branch of the current session.
     /// This method stores the current session ID before creating a new one,
     /// preventing the bug where forks would overwrite the parent session.
+    /// 
+    /// Note: The C# implementation uses full-session saves (_isDirty flag) rather than 
+    /// incremental appends. If incremental persistence is added in the future, ensure 
+    /// that user messages in forked sessions are persisted even before the first 
+    /// assistant message arrives (see TypeScript fix in commit c557320).
     /// </summary>
     /// <param name="name">Optional name for the forked session</param>
     /// <param name="model">Optional model for the forked session</param>
