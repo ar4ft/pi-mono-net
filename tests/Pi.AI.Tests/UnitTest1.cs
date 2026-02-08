@@ -228,4 +228,56 @@ public class TypesTests
         Assert.Equal(180, usage.TotalTokens);
         Assert.Equal(0.0033, usage.Cost.Total);
     }
+
+    [Fact]
+    public void Model_AllowsOpenAICompatOverrides()
+    {
+        // Arrange
+        var compat = new OpenAICompletionsCompat
+        {
+            SupportsStore = true,
+            SupportsDeveloperRole = false,
+            MaxTokensField = "max_completion_tokens",
+            ThinkingFormat = "openai",
+            OpenRouterRouting = new OpenRouterRouting
+            {
+                Only = new List<string> { "anthropic" },
+                Order = new List<string> { "openai" }
+            },
+            VercelGatewayRouting = new VercelGatewayRouting
+            {
+                Only = new List<string> { "bedrock" }
+            }
+        };
+
+        // Act
+        var model = new Model
+        {
+            Id = "test-model",
+            Name = "Test Model",
+            Api = "openai-completions",
+            Provider = "openai",
+            BaseUrl = "https://api.example.com",
+            Reasoning = false,
+            Input = new List<string> { "text" },
+            Cost = new ModelCost
+            {
+                Input = 0.01,
+                Output = 0.02,
+                CacheRead = 0,
+                CacheWrite = 0
+            },
+            ContextWindow = 8000,
+            MaxTokens = 4000,
+            Compat = compat
+        };
+
+        // Assert
+        Assert.True(model.Compat?.SupportsStore);
+        Assert.False(model.Compat?.SupportsDeveloperRole);
+        Assert.Equal("max_completion_tokens", model.Compat?.MaxTokensField);
+        Assert.Equal("openai", model.Compat?.ThinkingFormat);
+        Assert.Contains("anthropic", model.Compat?.OpenRouterRouting?.Only ?? new List<string>());
+        Assert.Contains("bedrock", model.Compat?.VercelGatewayRouting?.Only ?? new List<string>());
+    }
 }
