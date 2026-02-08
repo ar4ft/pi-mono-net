@@ -67,7 +67,6 @@ public record ThinkingBudgets
     public int? Low { get; init; }
     public int? Medium { get; init; }
     public int? High { get; init; }
-    public int? XHigh { get; init; }
 }
 
 /// <summary>

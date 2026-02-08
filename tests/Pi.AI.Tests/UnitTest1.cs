@@ -230,21 +230,6 @@ public class TypesTests
     }
 
     [Fact]
-    public void ThinkingBudgets_SupportsXHigh()
-    {
-        // Arrange & Act
-        var budgets = new ThinkingBudgets
-        {
-            Minimal = 1000,
-            XHigh = 9000
-        };
-
-        // Assert
-        Assert.Equal(1000, budgets.Minimal);
-        Assert.Equal(9000, budgets.XHigh);
-    }
-
-    [Fact]
     public void Model_AllowsOpenAICompatOverrides()
     {
         // Arrange
