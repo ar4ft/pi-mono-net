@@ -67,6 +67,7 @@ public record ThinkingBudgets
     public int? Low { get; init; }
     public int? Medium { get; init; }
     public int? High { get; init; }
+    public int? XHigh { get; init; }
 }
 
 /// <summary>
@@ -103,6 +104,49 @@ public record SimpleStreamOptions : StreamOptions
     public ThinkingLevel? Reasoning { get; init; }
     public ThinkingBudgets? ThinkingBudgets { get; init; }
 }
+
+/// <summary>
+/// OpenRouter routing preferences for OpenAI-compatible APIs
+/// </summary>
+public record OpenRouterRouting
+{
+    public List<string>? Only { get; init; }
+    public List<string>? Order { get; init; }
+}
+
+/// <summary>
+/// Vercel AI Gateway routing preferences for OpenAI-compatible APIs
+/// </summary>
+public record VercelGatewayRouting
+{
+    public List<string>? Only { get; init; }
+    public List<string>? Order { get; init; }
+}
+
+/// <summary>
+/// Compatibility overrides for OpenAI-compatible completions/responses APIs
+/// </summary>
+public record OpenAICompletionsCompat
+{
+    public bool? SupportsStore { get; init; }
+    public bool? SupportsDeveloperRole { get; init; }
+    public bool? SupportsReasoningEffort { get; init; }
+    public bool? SupportsUsageInStreaming { get; init; }
+    public string? MaxTokensField { get; init; }
+    public bool? RequiresToolResultName { get; init; }
+    public bool? RequiresAssistantAfterToolResult { get; init; }
+    public bool? RequiresThinkingAsText { get; init; }
+    public bool? RequiresMistralToolIds { get; init; }
+    public string? ThinkingFormat { get; init; }
+    public OpenRouterRouting? OpenRouterRouting { get; init; }
+    public VercelGatewayRouting? VercelGatewayRouting { get; init; }
+    public bool? SupportsStrictMode { get; init; }
+}
+
+/// <summary>
+/// Compatibility settings for OpenAI responses API (reserved for future use)
+/// </summary>
+public record OpenAIResponsesCompat;
 
 /// <summary>
 /// Text content block
@@ -256,6 +300,7 @@ public record Model
     public required int ContextWindow { get; init; }
     public required int MaxTokens { get; init; }
     public Dictionary<string, string>? Headers { get; init; }
+    public OpenAICompletionsCompat? Compat { get; init; }
 }
 
 public record ModelCost
