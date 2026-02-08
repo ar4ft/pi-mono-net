@@ -524,6 +524,11 @@ pi.on("tool_call", (event) => {
 
 Fired after tool executes. **Can modify result.**
 
+`tool_result` handlers chain like middleware:
+- Handlers run in extension load order
+- Each handler sees the latest result after previous handler changes
+- Handlers can return partial patches (`content`, `details`, or `isError`); omitted fields keep their current values
+
 ```typescript
 import { isBashToolResult } from "@mariozechner/pi-coding-agent";
 
@@ -1550,6 +1555,9 @@ ctx.ui.setTitle("pi - my-project");
 // Editor text
 ctx.ui.setEditorText("Prefill text");
 const current = ctx.ui.getEditorText();
+
+// Paste into editor (triggers paste handling, including collapse for large content)
+ctx.ui.pasteToEditor("pasted content");
 
 // Tool output expansion
 const wasExpanded = ctx.ui.getToolsExpanded();
