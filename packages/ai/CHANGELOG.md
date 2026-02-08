@@ -2,6 +2,72 @@
 
 ## [Unreleased]
 
+## [0.52.8] - 2026-02-07
+
+### Added
+
+- Added OpenRouter `auto` model alias for automatic model routing ([#1361](https://github.com/badlogic/pi-mono/pull/1361) by [@yogasanas](https://github.com/yogasanas))
+
+### Changed
+
+- Replaced Claude Opus 4.5 with Opus 4.6 in model definitions ([#1345](https://github.com/badlogic/pi-mono/pull/1345) by [@calvin-hpnet](https://github.com/calvin-hpnet))
+
+## [0.52.7] - 2026-02-06
+
+### Added
+
+- Added `AWS_BEDROCK_SKIP_AUTH` and `AWS_BEDROCK_FORCE_HTTP1` environment variables for connecting to unauthenticated Bedrock proxies ([#1320](https://github.com/badlogic/pi-mono/pull/1320) by [@virtuald](https://github.com/virtuald))
+
+### Fixed
+
+- Set OpenAI Responses API requests to `store: false` by default to avoid server-side history logging ([#1308](https://github.com/badlogic/pi-mono/issues/1308))
+- Re-exported TypeBox `Type`, `Static`, and `TSchema` from `@mariozechner/pi-ai` to match documentation and avoid duplicate TypeBox type identity issues in pnpm setups ([#1338](https://github.com/badlogic/pi-mono/issues/1338))
+- Fixed Bedrock adaptive thinking handling for Claude Opus 4.6 with interleaved thinking beta responses ([#1323](https://github.com/badlogic/pi-mono/pull/1323) by [@markusylisiurunen](https://github.com/markusylisiurunen))
+- Fixed `AWS_BEDROCK_SKIP_AUTH` environment detection to avoid `process` access in non-Node.js environments
+
+## [0.52.6] - 2026-02-05
+
+## [0.52.5] - 2026-02-05
+
+### Fixed
+
+- Fixed `supportsXhigh()` to treat Anthropic Messages Opus 4.6 models as xhigh-capable so `streamSimple` can map `xhigh` to adaptive effort `max`
+
+## [0.52.4] - 2026-02-05
+
+## [0.52.3] - 2026-02-05
+
+### Fixed
+
+- Fixed Bedrock Opus 4.6 model IDs (removed `:0` suffix) and cache pricing for `us.*` and `eu.*` variants
+- Added missing `eu.anthropic.claude-opus-4-6-v1` inference profile to model catalog
+- Fixed Claude Opus 4.6 context window metadata to 200000 for Anthropic and OpenCode providers
+
+## [0.52.2] - 2026-02-05
+
+## [0.52.1] - 2026-02-05
+
+### Added
+
+- Added adaptive thinking support for Claude Opus 4.6 with effort levels (`low`, `medium`, `high`, `max`)
+- Added `effort` option to `AnthropicOptions` for controlling adaptive thinking depth
+- `thinkingEnabled` now automatically uses adaptive thinking for Opus 4.6+ models and budget-based thinking for older models
+- `streamSimple`/`completeSimple` automatically map `ThinkingLevel` to effort levels for Opus 4.6
+
+### Changed
+
+- Updated `@anthropic-ai/sdk` to 0.73.0
+- Updated `@aws-sdk/client-bedrock-runtime` to 3.983.0
+- Updated `@google/genai` to 1.40.0
+- Removed `fast-xml-parser` override (no longer needed)
+
+## [0.52.0] - 2026-02-05
+
+### Added
+
+- Added Claude Opus 4.6 model to the generated model catalog
+- Added GPT-5.3 Codex model to the generated model catalog (OpenAI Codex provider only)
+
 ## [0.51.6] - 2026-02-04
 
 ### Fixed
